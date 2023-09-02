@@ -1,6 +1,5 @@
 using codenames_solver;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<CardsState>();
+//builder.Services.AddHttpClient<SimilarityClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+builder.Services.AddHttpClient<SimilarityClient>("LocalApi", client => client.BaseAddress = new Uri("http://localhost:5073/"));
 
 var app = builder.Build();
 
@@ -27,5 +28,7 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+app.MapControllers();
 
 app.Run();
