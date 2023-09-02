@@ -1,0 +1,22 @@
+﻿.code-card {
+    display: flex;
+    border: solid black 2px;
+    border-radius: 10px;
+    position: relative;
+    background-color: beige;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.code-card[card-color='Neutral'] {
+    background-color: beige;
+}
+.code-card[card-color='Red'] {
+    background-color: red;
+}
+.code-card[card-color='Blue'] {
+    background-color: blue;
+}
+.code-card[card-color='Black'] {
+    background-color: dimgray;
+}

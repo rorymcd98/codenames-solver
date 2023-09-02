@@ -1,0 +1,35 @@
+﻿@inject CardsState CardsState
+@implements IDisposable
+
+<div class="color-selector">
+    <div class="d-flex p-2">
+        <div class="col-square neutral" @onclick="()=>UpdateCardColorOnclick(CardColor.Neutral)"/>
+        <div class="col-square red" @onclick="()=>UpdateCardColorOnclick(CardColor.Red)" />
+        <div class="col-square blue" @onclick="()=>UpdateCardColorOnclick(CardColor.Blue)" />
+        <div class="col-square black" @onclick="()=>UpdateCardColorOnclick(CardColor.Black)" />
+    </div>
+    <p class="fst-italic my-0">Pick a color</p>
+</div>
+
+
+@code {
+    [Parameter]
+    public int CardIndex { get; set; }
+
+    void UpdateCardColorOnclick(CardColor cardColor)
+    {
+        CardsState.UpdateCardColor(this, cardColor, CardIndex);
+    }
+
+    protected override void OnInitialized()
+    {
+        CardsState.StateChanged += async (Source, Property)
+            => await InvokeAsync(StateHasChanged);
+    }
+
+    void IDisposable.Dispose()
+    {
+        CardsState.StateChanged -= async (Source, Property)
+            => await InvokeAsync(StateHasChanged);
+    }
+}

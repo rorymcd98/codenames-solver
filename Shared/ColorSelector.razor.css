@@ -1,0 +1,39 @@
+﻿.color-selector {
+    position: absolute;
+    top: calc(100% + 12px);
+    z-index: 100;
+    border: solid black 1px;
+    border-radius: 4px;
+    padding-inline: 4px;
+    background-color: antiquewhite;
+    cursor: default;
+}
+.color-selector::before {
+    content: "";
+    position: absolute;
+    top: -10px; /* The arrow will point down from the top of the element */
+    left: 50%; /* This will center the arrow */
+    transform: translateX(-50%); /* This will also help to center the arrow */
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid black;
+}
+.col-square {
+    height: 2rem;
+    width: 2rem;
+    border: solid white 1px;
+    margin-inline: 2px;
+    cursor: pointer;
+}
+.col-square.red{
+    background-color: red;
+}
+.col-square.blue {
+    background-color: blue;
+}
+.col-square.neutral {
+    background-color: beige;
+}
+.col-square.black {
+    background-color: dimgray;
+}

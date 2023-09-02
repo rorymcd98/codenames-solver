@@ -1,0 +1,58 @@
+﻿@inject CardsState CardsState
+@implements IDisposable
+
+<div class="code-card flex-column align-items-center" card-color="@cardColor" @onclick="ToggleColorSelector">
+    <input class="w-100" placeholder="Enter a word..." @oninput="UpdateCardTextOninput" value="@cardText" @onclick:stopPropagation="true"/>
+    @if (cardText != null)
+    {
+        <div>
+            @cardText
+        </div>
+    }
+    <hr class="my-1"/>
+    <div class="d-flex justify-content-between align-items-stretch w-100">
+        <span>
+            Test
+        </span>
+        <span>
+            Test2
+        </span>
+    </div>
+    @if(ShowColorSelector)
+    {
+        <ColorSelector CardIndex="@CardIndex"/>
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public int CardIndex { get; set; }
+
+    private string cardText => CardsState.GetCardText(CardIndex);
+    private CardColor cardColor => CardsState.GetCardColor(CardIndex);
+    private bool ShowColorSelector { get; set; } = false;
+
+    void ToggleColorSelector()
+    {
+        ShowColorSelector = !ShowColorSelector;
+    }
+
+    void UpdateCardTextOninput(ChangeEventArgs e)
+    {
+        string msg = e.Value.ToString();
+        CardsState.UpdateCardText(this, msg, CardIndex);
+    }
+
+    protected override void OnInitialized()
+    {
+        CardsState.StateChanged += async (Source, Property)
+            => await InvokeAsync(StateHasChanged);
+    }
+
+    void IDisposable.Dispose()
+    {
+        CardsState.StateChanged -= async (Source, Property)
+            => await InvokeAsync(StateHasChanged);
+    }
+}

@@ -1,0 +1,21 @@
+﻿<h3>Card Grid</h3>
+
+<div class="container d-flex flex-column align-items-center" style="max-width: 80%">
+    @for (int i = 0; i<GRID_HEIGHT; i++)
+    {
+        <div class="row my-2 justify-content-evenly">
+            @for (int j = 0; j < GRID_LENGTH; j++)
+            {
+                int index = i * GRID_LENGTH + j;
+                <div class="col-lg-2">
+                    <CodeCard CardIndex="index" />
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private const int GRID_LENGTH = 5;
+    private const int GRID_HEIGHT = 5;
+}
