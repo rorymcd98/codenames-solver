@@ -1,5 +1,5 @@
 using codenames_solver;
-using Microsoft.AspNetCore.Components;
+using Word2vec.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +9,12 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<CardsState>();
 //builder.Services.AddHttpClient<SimilarityClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 builder.Services.AddHttpClient<SimilarityClient>("LocalApi", client => client.BaseAddress = new Uri("http://localhost:5073/"));
+builder.Services.AddSingleton<Vocabulary>(sp =>
+{
+    var path = @"C:\Users\rorym\OneDrive\Desktop\Word2vec\nlpl\model.bin";
+    var vocabulary = new Word2VecBinaryReader().Read(path);
+    return vocabulary;
+});
 
 var app = builder.Build();
 
