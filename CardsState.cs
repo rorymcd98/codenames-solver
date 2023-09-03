@@ -5,22 +5,22 @@ namespace codenames_solver
     public class CardsState
     {
         private const int NUMBER_OF_CARDS = 25;
-        public List<CardInfo> cards { get; private set; }
+        public List<CardInfo> Cards { get; private set; }
         private ValidWords validWords;
         private Random random = new Random();
         public CardsState(ValidWords ValidWords)
         {
-            cards = new List<CardInfo>(NUMBER_OF_CARDS);
+            Cards = new List<CardInfo>(NUMBER_OF_CARDS);
             for (int i = 0; i < NUMBER_OF_CARDS; i++)
             {
-                cards.Add(new CardInfo());
+                Cards.Add(new CardInfo());
             }
             validWords = ValidWords;
         }
 
         private void GenerateRandomCardWords()
         {
-            foreach (var card in cards)
+            foreach (var card in Cards)
             {
                 card.Text = validWords.GetRandomWord();
             }
@@ -30,7 +30,7 @@ namespace codenames_solver
         {
             var colorIndices = CardColors.GenerateIndeces();
             int index = 0;
-            foreach (var card in cards)
+            foreach (var card in Cards)
             {
                 if (colorIndices.Blue.Contains(index))
                     card.Color = CardColor.Blue;
@@ -54,7 +54,7 @@ namespace codenames_solver
         public List<string> ListInvalidWords()
         {
             List<string> result = new List<string>();
-            foreach (var card in cards)
+            foreach (var card in Cards)
             {
                 if (!validWords.IsValidWord(card.Text))
                 {
@@ -66,34 +66,34 @@ namespace codenames_solver
 
         public bool GetCardPicked(int CardIndex)
         {
-            return cards[CardIndex].Picked;
+            return Cards[CardIndex].Picked;
         }
 
         public void UpdateCardPicked(ComponentBase Source, bool NewCardPicked, int CardIndex)
         {
-            this.cards[CardIndex].Picked = NewCardPicked;
+            this.Cards[CardIndex].Picked = NewCardPicked;
             NotifyStateChanged(Source, "CardPicked");
         }
 
         public CardColor GetCardColor(int CardIndex)
         {
-            return cards[CardIndex].Color;
+            return Cards[CardIndex].Color;
         }
 
         public void UpdateCardColor(ComponentBase Source, CardColor NewCardColor, int CardIndex)
         {
-            this.cards[CardIndex].Color = NewCardColor;
+            this.Cards[CardIndex].Color = NewCardColor;
             NotifyStateChanged(Source, "CardColor");
         }
 
         public string GetCardText(int CardIndex)
         {
-            return cards[CardIndex].Text;
+            return Cards[CardIndex].Text;
         }
 
         public void UpdateCardText(ComponentBase Source, string NewCardText, int CardIndex)
         {
-            this.cards[CardIndex].Text = NewCardText;
+            this.Cards[CardIndex].Text = NewCardText;
             NotifyStateChanged(Source, "CardText");
         }
 

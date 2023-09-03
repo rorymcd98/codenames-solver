@@ -40,7 +40,7 @@
 @code {
     private string errorMessage;
     private string findCodewordsButtonText = "Find Codewords";
-    private string response;
+    private SimilarityPostResponseDTO similarityResponse;
     private int currentNumberOfWords => ControlState.CurrentNumberOfWords;
     private List<int> validNumbers = Enumerable.Range(1, 6).ToList();
     private Team currentTeam => ControlState.CurrentTeam;
@@ -88,7 +88,7 @@
             return;
         }
         errorMessage = null;
-        response = await SimilarityClient.RequestSimilarWords();
+        similarityResponse = await SimilarityClient.RequestSimilarWords();
     }
 
     private string randomiseBoardButtonText = "Generate Random Board";

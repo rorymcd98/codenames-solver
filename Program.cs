@@ -17,6 +17,7 @@ builder.Services.AddSingleton<Vocabulary>(sp =>
 });
 builder.Services.AddSingleton<ValidWords>();
 builder.Services.AddSingleton<FuzzySort>();
+builder.Services.AddScoped<DTOBuilder>();
 
 
 var app = builder.Build();

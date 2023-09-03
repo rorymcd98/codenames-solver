@@ -2,18 +2,19 @@
 public class SimilarityClient
 {
     private readonly HttpClient httpClient;
-    private CardsState cardsState;
+    private DTOBuilder dtoBuilder;
 
-    public SimilarityClient(HttpClient httpClient, CardsState CardsState)
+    public SimilarityClient(HttpClient httpClient, DTOBuilder DTOBuilder)
     {
         this.httpClient = httpClient;
-        this.cardsState = CardsState;
+        this.dtoBuilder = DTOBuilder;
     }
-    public async Task<string> RequestSimilarWords()
+    public async Task<SimilarityPostResponseDTO> RequestSimilarWords()
     {
-        var response = await httpClient.PostAsJsonAsync("api/Similarity", cardsState.cards);
+        SimilarityPostDTO SimilarityPostBody = dtoBuilder.BuildSimilarityPostDTO();
+        var response = await httpClient.PostAsJsonAsync("api/Similarity", SimilarityPostBody);
         response.EnsureSuccessStatusCode();
-        var orderId = await response.Content.ReadAsStringAsync();
-        return orderId;
+        var SimilarityPostResponse = await response.Content.ReadFromJsonAsync<SimilarityPostResponseDTO>();
+        return SimilarityPostResponse;
     }
 }
