@@ -1,0 +1,24 @@
+﻿@inject CardsState CardsState
+<div @onmousedown="ToggleCardPicked" @onmousedown:stopPropagation class="d-flex align-items-center justify-content-center" style="user-select: none; border: solid gray 1px; border-radius: 50%; width: 25px; height: 25px;">
+    @if (cardPicked)
+    {
+        <div>✔</div>
+    }
+    else
+    {
+        <div>⭕</div>
+    }
+</div>
+    
+
+@code {
+    [Parameter]
+    public int CardIndex { get; set; }
+
+    private bool cardPicked => CardsState.GetCardPicked(CardIndex);
+
+    void ToggleCardPicked()
+    {
+        CardsState.UpdateCardPicked(this, !cardPicked, CardIndex);
+    }
+}

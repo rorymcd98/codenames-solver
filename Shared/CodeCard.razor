@@ -2,7 +2,7 @@
 @inject CardsState CardsState
 @implements IDisposable
 
-<div class="code-card flex-column align-items-center" card-color="@cardColor" @onclick="ToggleColorSelector" >
+<div class="code-card flex-column align-items-center" style="opacity: @opacityValue" card-color="@cardColor" @onclick="ToggleColorSelector" >
     <div class="d-flex gap-2">
         <span>
             <input class="w-100" placeholder="Enter a word..." @oninput="UpdateCardTextOninput" value="@cardText" @onclick:stopPropagation="true" @onfocus="OnFocus" @onblur="OnBlur" />
@@ -19,7 +19,7 @@
     <hr class="my-1"/>
     <div class="d-flex justify-content-between align-items-stretch w-100">
         <span>
-            Test
+            <TogglePickedButton CardIndex="@CardIndex" />
         </span>
         <span>
             Test2
@@ -39,7 +39,9 @@
     private bool _isInputSelected;
     private string cardText => CardsState.GetCardText(CardIndex);
     private CardColor cardColor => CardsState.GetCardColor(CardIndex);
+    private string opacityValue => CardsState.GetCardPicked(CardIndex) ? "30%" : "100%";
     private bool ShowColorSelector { get; set; } = false;
+    
 
     void OnFocus(FocusEventArgs e)
     {

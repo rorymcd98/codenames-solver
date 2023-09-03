@@ -18,11 +18,6 @@ namespace codenames_solver
             validWords = ValidWords;
         }
 
-        public CardColor GetCardColor(int CardIndex)
-        {
-            return cards[CardIndex].Color;
-        }
-
         private void GenerateRandomCardWords()
         {
             foreach (var card in cards)
@@ -30,7 +25,6 @@ namespace codenames_solver
                 card.Text = validWords.GetRandomWord();
             }
         }
-
 
         public void GenerateRandomCardColors()
         {
@@ -68,6 +62,22 @@ namespace codenames_solver
                 }
             }
             return result;
+        }
+
+        public bool GetCardPicked(int CardIndex)
+        {
+            return cards[CardIndex].Picked;
+        }
+
+        public void UpdateCardPicked(ComponentBase Source, bool NewCardPicked, int CardIndex)
+        {
+            this.cards[CardIndex].Picked = NewCardPicked;
+            NotifyStateChanged(Source, "CardPicked");
+        }
+
+        public CardColor GetCardColor(int CardIndex)
+        {
+            return cards[CardIndex].Color;
         }
 
         public void UpdateCardColor(ComponentBase Source, CardColor NewCardColor, int CardIndex)
