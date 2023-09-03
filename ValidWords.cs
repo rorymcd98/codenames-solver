@@ -6,20 +6,31 @@ namespace codenames_solver
     public class ValidWords
     {
         private Random random = new Random();
+        private JObject jsonWords;
         public List<string> Words { get; set; }
-        private List<string> GetJsonKeys(string path)
+
+        private JObject GetJsonWords(string path)
         {
-            // Read JSON directly from a file
             using StreamReader file = File.OpenText(path);
             using JsonTextReader reader = new JsonTextReader(file);
-            JObject jsonObject = (JObject)JToken.ReadFrom(reader);
-
+            return (JObject)JToken.ReadFrom(reader);
+        }
+        private List<string> GetJsonKeys()
+        {
             List<string> keys = new List<string>();
-            foreach (KeyValuePair<string, JToken> pair in jsonObject)
+            foreach (KeyValuePair<string, JToken> pair in jsonWords)
             {
                 keys.Add(pair.Key);
             }
             return keys;
+        }
+        public string GetOriginalWord(string formattedWord)
+        {
+            JToken value;
+            if (!jsonWords.TryGetValue(formattedWord, out value))
+                return null;
+            return value.ToString();
+
         }
 
         public bool IsValidWord(string word)
@@ -36,7 +47,8 @@ namespace codenames_solver
         const string PATH = @"C:\Users\rorym\OneDrive\Desktop\Word2vec\nlpl\words.json";
         public ValidWords()
         {
-            Words = GetJsonKeys(PATH);
+            jsonWords = GetJsonWords(PATH);
+            Words = GetJsonKeys();
         }
 
     }

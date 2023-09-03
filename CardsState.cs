@@ -1,12 +1,11 @@
-﻿using codenames_solver.Classes;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace codenames_solver
 {
     public class CardsState
     {
         private const int NUMBER_OF_CARDS = 25;
-        private List<CardInfo> cards;
+        public List<CardInfo> cards { get; private set; }
         private ValidWords validWords;
         private Random random = new Random();
         public CardsState(ValidWords ValidWords)
@@ -45,6 +44,8 @@ namespace codenames_solver
                     card.Color = CardColor.Red;
                 else if (colorIndices.Black == index)
                     card.Color = CardColor.Black;
+                else
+                    card.Color = CardColor.Neutral;
 
                 index++;
             }
@@ -54,6 +55,19 @@ namespace codenames_solver
             GenerateRandomCardColors();
             GenerateRandomCardWords();
             NotifyStateChanged(Source, "Board");
+        }
+
+        public List<string> ListInvalidWords()
+        {
+            List<string> result = new List<string>();
+            foreach (var card in cards)
+            {
+                if (!validWords.IsValidWord(card.Text))
+                {
+                    result.Add(card.Text);
+                }
+            }
+            return result;
         }
 
         public void UpdateCardColor(ComponentBase Source, CardColor NewCardColor, int CardIndex)

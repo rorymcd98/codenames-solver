@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<CardsState>();
-//builder.Services.AddHttpClient<SimilarityClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+builder.Services.AddScoped<ControlState>();
 builder.Services.AddHttpClient<SimilarityClient>("LocalApi", client => client.BaseAddress = new Uri("http://localhost:5073/"));
 builder.Services.AddSingleton<Vocabulary>(sp =>
 {
@@ -15,7 +15,6 @@ builder.Services.AddSingleton<Vocabulary>(sp =>
     var vocabulary = new Word2VecBinaryReader().Read(path);
     return vocabulary;
 });
-// Keep these separate, we might want to narrow ValidWords later
 builder.Services.AddSingleton<ValidWords>();
 builder.Services.AddSingleton<FuzzySort>();
 

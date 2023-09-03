@@ -1,15 +1,94 @@
 ﻿@inject SimilarityClient SimilarityClient
 @inject CardsState CardsState
+@inject ControlState ControlState
 
-<Button OnClick="@GetSimilarWords" Text="@findCodewordsButtonText" />
-@* <Button OnClick="@RandomiseBoard" Text="@randomiseBoardButtonText" /> *@
+<div class="d-flex flex-column gap-2 align-items-center">
+    <div class="d-flex gap-2 align-items-center">
+        <Button OnClick="@GetSimilarWords" Text="@findCodewordsButtonText" />
+        <Button OnClick="@RandomiseBoard" Text="@randomiseBoardButtonText" />
+        <div>
+            Related words:
+        </div>
+        <select @onchange="UpdateNumberOfWords" value="@currentNumberOfWords">
+            @foreach (var number in validNumbers)
+            {
+                <option value="@number">@number</option>
+            }
+        </select>
+        <div>
+            Current team:
+        </div>
+        <select @onchange="UpdateCurrentTeam" style="color: white; background-color: @currentTeam" value="@currentTeam">
+            @foreach (var team in Enum.GetNames(typeof(Team)))
+            {
+                <option value="@team" style="background-color: @team">@team</option>
+            }
+        </select>
+    </div>
+    @if (errorMessage != null)
+    {
+        <p style="color: red;">
+            Error: @errorMessage
+        </p>
+    }
+    <div>
+        <input placeholder="(Optional) Test a Codeword..." @oninput="UpdateCurrentCodeWord" value="@localCodeWord" />
+    <Button OnClick="GetWordAssessment" Text="Assess Codeword"/>
+    </div>
+</div>
 
 @code {
-
+    private string errorMessage;
     private string findCodewordsButtonText = "Find Codewords";
+    private string response;
+    private int currentNumberOfWords => ControlState.CurrentNumberOfWords;
+    private List<int> validNumbers = Enumerable.Range(1, 6).ToList();
+    private Team currentTeam => ControlState.CurrentTeam;
+    private string localCodeWord;
+
+    void UpdateCurrentCodeWord(ChangeEventArgs e)
+    {
+        string newCodeWord = e.Value.ToString();
+        ControlState.UpdateCodeWord(newCodeWord);
+    }
+
+    void UpdateNumberOfWords(ChangeEventArgs e)
+    {
+        int newNumber = int.Parse(e.Value.ToString());
+        ControlState.UpdateNumberOfWords(newNumber);
+    }
+
+    void UpdateCurrentTeam(ChangeEventArgs e)
+    {
+        Team newTeam;
+        string newTeamString = e.Value.ToString();
+        if(newTeamString == "Red")
+        {
+            newTeam = Team.Red;
+        }
+        else
+        {
+            newTeam = Team.Blue;
+        }
+
+        ControlState.UpdateTeam(newTeam);
+    }
+
+    private async void GetWordAssessment()
+    {
+        return;
+    }
+
     private async void GetSimilarWords()
     {
-        var response = await SimilarityClient.RequestWords("words");
+        var invalidWords = CardsState.ListInvalidWords();
+        if (invalidWords.Count > 0)
+        {
+            errorMessage = $"Invalid words: [{string.Join(", ", invalidWords)}]";
+            return;
+        }
+        errorMessage = null;
+        response = await SimilarityClient.RequestSimilarWords();
     }
 
     private string randomiseBoardButtonText = "Generate Random Board";

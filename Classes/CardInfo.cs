@@ -1,4 +1,4 @@
-﻿namespace codenames_solver.Classes
+﻿namespace codenames_solver
 {
     public class CardInfo
     {

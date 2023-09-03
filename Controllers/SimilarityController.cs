@@ -1,30 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Word2vec.Tools;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace codenames_solver.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class SimilarityController : ControllerBase
     {
         private Vocabulary _vocabulary;
         private ValidWords _validWords;
 
-        public ValuesController(Vocabulary vocabulary, ValidWords validWords) { 
+        public SimilarityController(Vocabulary vocabulary, ValidWords validWords) { 
             _vocabulary = vocabulary;
             _validWords = validWords;
         }
 
         [HttpPost]
-        public string? Post([FromBody] string value)
+        public string? Post([FromBody] List<CardInfo> CardsInfo)
         {
             string boy = "cat_NOUN";
-            foreach (var word in  _validWords.Words)
+            foreach (var card in CardsInfo)
             {
-                Console.WriteLine(word);
+                var originalWord = _validWords.GetOriginalWord(card.Text);
+                
+                Console.WriteLine( originalWord + "here: ");
+                
+                if (originalWord != null)
+                {
+                    boy = originalWord;
+                }
+
             }
+
             //string girl = "dog_NOUN";
             //string hamster = "hamster_NOUN";
 
@@ -37,7 +44,6 @@ namespace codenames_solver.Controllers
 
 
             //Console.WriteLine(additionRepresentation.WordOrNull);
-
 
             return boy;
         }
