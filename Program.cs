@@ -15,6 +15,10 @@ builder.Services.AddSingleton<Vocabulary>(sp =>
     var vocabulary = new Word2VecBinaryReader().Read(path);
     return vocabulary;
 });
+// Keep these separate, we might want to narrow ValidWords later
+builder.Services.AddSingleton<ValidWords>();
+builder.Services.AddSingleton<FuzzySort>();
+
 
 var app = builder.Build();
 

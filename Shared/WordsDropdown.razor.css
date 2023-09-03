@@ -1,0 +1,20 @@
+﻿.words-dropdown {
+    border: solid black 1px;
+    background-color: white;
+    width: 110%;
+    position: absolute;
+    top: 3rem;
+    z-index: 101;
+    text-indent: 4px;
+    max-height: 10rem;
+    overflow-y: scroll;
+}
+
+.words-dropdown-element {
+    border-bottom: solid gray 1px;
+}
+
+.words-dropdown-element:hover {
+    background-color: royalblue;
+    transition: background-color linear 0.2s;
+}

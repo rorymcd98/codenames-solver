@@ -1,0 +1,37 @@
+﻿@inject CardsState CardsState
+@inject FuzzySort FuzzySort
+@inject ValidWords ValidWords
+@implements IDisposable
+
+
+<div class="words-dropdown">
+    @foreach (var word in ValidWordsList)
+    {
+        <div class="words-dropdown-element" @onmousedown="() => SelectWordCallback(word)" @onclick:stopPropagation="true">@word</div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int CardIndex { get; set; }
+
+    private string cardText => CardsState.GetCardText(CardIndex);
+    private List<string> ValidWordsList => FuzzySort.GetFuzzyList(cardText, ValidWords.Words);
+
+    private void SelectWordCallback(string word)
+    {
+        CardsState.UpdateCardText(this, word, CardIndex);
+    }
+
+    protected override void OnInitialized()
+    {
+    CardsState.StateChanged += async (Source, Property)
+        => await InvokeAsync(StateHasChanged);
+    }
+
+    void IDisposable.Dispose()
+    {
+    CardsState.StateChanged -= async (Source, Property)
+        => await InvokeAsync(StateHasChanged);
+    }
+}

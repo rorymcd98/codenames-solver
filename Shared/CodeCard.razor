@@ -1,14 +1,21 @@
 ﻿@inject CardsState CardsState
+@* @namespace codenames_solver.Classes *@
 @implements IDisposable
 
-<div class="code-card flex-column align-items-center" card-color="@cardColor" @onclick="ToggleColorSelector">
-    <input class="w-100" placeholder="Enter a word..." @oninput="UpdateCardTextOninput" value="@cardText" @onclick:stopPropagation="true"/>
-    @if (cardText != null)
+<div class="code-card flex-column align-items-center" card-color="@cardColor" @onclick="ToggleColorSelector" >
+    <div class="d-flex gap-2">
+        <span>
+            <input class="w-100" placeholder="Enter a word..." @oninput="UpdateCardTextOninput" value="@cardText" @onclick:stopPropagation="true" @onfocus="OnFocus" @onblur="OnBlur" />
+        </span>
+
+        <IsValidWordIcon CardIndex="@CardIndex"/>
+    </div>
+
+    @if (_isInputSelected)
     {
-        <div>
-            @cardText
-        </div>
+        <WordsDropdown CardIndex="@CardIndex"/>
     }
+
     <hr class="my-1"/>
     <div class="d-flex justify-content-between align-items-stretch w-100">
         <span>
@@ -29,9 +36,20 @@
     [Parameter]
     public int CardIndex { get; set; }
 
+    private bool _isInputSelected;
     private string cardText => CardsState.GetCardText(CardIndex);
     private CardColor cardColor => CardsState.GetCardColor(CardIndex);
     private bool ShowColorSelector { get; set; } = false;
+
+    void OnFocus(FocusEventArgs e)
+    {
+        _isInputSelected = true;
+    }
+
+    void OnBlur(FocusEventArgs e)
+    {
+        _isInputSelected = false;
+    }
 
     void ToggleColorSelector()
     {

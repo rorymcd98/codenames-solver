@@ -1,12 +1,5 @@
-﻿namespace codenames_solver.Shared
+﻿namespace codenames_solver.Classes
 {
-    public enum CardColor
-    {
-        Blue,
-        Red,
-        Black,
-        Neutral
-    }
     public class CardInfo
     {
         public string Text { get; set; }

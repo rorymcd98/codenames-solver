@@ -1,0 +1,9 @@
+﻿<button class="btn-primary custom-button" @onclick="OnClick">@Text</button>
+
+@code {
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+}

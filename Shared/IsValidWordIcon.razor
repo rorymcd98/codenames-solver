@@ -1,0 +1,31 @@
+﻿@inject CardsState CardsState
+@inject ValidWords ValidWords
+@implements IDisposable
+
+@if(_isValidWord)
+{
+    <div style="color: green">✔</div>
+} else
+{
+    <div style="color: red">X</div>
+}
+
+@code {
+    [Parameter]
+    public int CardIndex { get; set; }
+
+    private string _cardText => CardsState.GetCardText(CardIndex);
+    private bool _isValidWord => ValidWords.IsValidWord(_cardText);
+
+    protected override void OnInitialized()
+    {
+        CardsState.StateChanged += async (Source, Property)
+            => await InvokeAsync(StateHasChanged);
+    }
+
+    void IDisposable.Dispose()
+    {
+        CardsState.StateChanged -= async (Source, Property)
+            => await InvokeAsync(StateHasChanged);
+    }
+}

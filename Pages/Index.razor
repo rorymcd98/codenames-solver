@@ -1,31 +1,12 @@
 ﻿@page "/"
-@inject SimilarityClient SimilarityClient
-@inject CardsState CardsState
+
 
 <PageTitle>Index</PageTitle>
 <div class="d-flex flex-column align-items-center">
     <CardGrid />
-
-    <button class="btn-primary find-codewords-btn" @onclick="GetSimilarWords">
-        Find codewords
-    </button>
-    @if(foo != null)
-    {
-        @foo
-    } else
-    {
-       <div>"No foo"</div>
-    }
-
-
+    <ControlPanel />
 </div>
     
 @code {
-    private string foo { get; set; }
 
-    private async void GetSimilarWords()
-    {
-        var response = await SimilarityClient.RequestWords("words");
-        foo = response;
-    }
 }
