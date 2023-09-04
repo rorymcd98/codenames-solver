@@ -5,32 +5,27 @@ namespace codenames_solver
 {
     public class ValidWords
     {
-        private Random random = new Random();
-        private JObject jsonWords;
+        private readonly Random random = new();
+        private readonly JObject jsonWords;
         public List<string> Words { get; set; }
 
         private JObject GetJsonWords(string path)
         {
             using StreamReader file = File.OpenText(path);
-            using JsonTextReader reader = new JsonTextReader(file);
+            using JsonTextReader reader = new(file);
             return (JObject)JToken.ReadFrom(reader);
         }
         private List<string> GetJsonKeys()
         {
-            List<string> keys = new List<string>();
-            foreach (KeyValuePair<string, JToken> pair in jsonWords)
-            {
-                keys.Add(pair.Key);
-            }
+            List<string> keys = new();
+            keys.AddRange(from KeyValuePair<string, JToken> pair in jsonWords
+                          select pair.Key);
             return keys;
         }
         public string GetOriginalWord(string formattedWord)
         {
-            JToken value;
-            if (!jsonWords.TryGetValue(formattedWord, out value))
-                return null;
-            return value.ToString();
-
+            jsonWords.TryGetValue(formattedWord, out JToken? value);
+            return value is not null ? value.ToString() : string.Empty;
         }
 
         public bool IsValidWord(string word)

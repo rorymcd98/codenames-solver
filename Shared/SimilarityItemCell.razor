@@ -1,7 +1,7 @@
 ﻿<div class="similarity-item-cell px-3">
     <h6>@heading</h6>
     <ul>
-        @foreach (string relatedWord in SimilarityItem.RelatedWords)
+        @foreach (string relatedWord in SimilarityItem?.RelatedWords ?? new())
         {
             <li>
                 @relatedWord
@@ -34,13 +34,14 @@
 
 @code {
     [Parameter]
-    public SimilarityItem SimilarityItem { get; set; }
+    public SimilarityItem? SimilarityItem { get; set; }
 
     private string heading => $"Relating to:";
-    private List<Tuple<string, double>> CodeWordScores => SimilarityItem.CodeWordScores;
+    private List<Tuple<string, double>> CodeWordScores => SimilarityItem?.CodeWordScores ?? new List<Tuple<string, double>>();
     private int lastIdx => CodeWordScores.Count - 1;
-    private Tuple<string, double> topCodeWord => SimilarityItem.CodeWordScores[0];
-    private string topCodeWordText => $"{topCodeWord.Item1}: {Math.Round(topCodeWord.Item2, 1)}";
+
+    private Tuple<string, double> topCodeWord => SimilarityItem?.CodeWordScores?.FirstOrDefault() ?? Tuple.Create<string, double>(string.Empty, 0);
+    private string topCodeWordText => $"{topCodeWord?.Item1 ?? "N/A"}: {Math.Round(topCodeWord?.Item2 ?? 0, 1)}";
 
     private bool isExpanded = false;
     private void Toggle()

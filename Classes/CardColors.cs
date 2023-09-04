@@ -14,7 +14,7 @@
         public static ColorIndeces GenerateIndeces()
         {
             int[] allNumbers = Enumerable.Range(0, 25).ToArray();
-            Random rand = new Random();
+            Random rand = new();
 
             int[] blue = allNumbers.OrderBy(x => rand.Next()).Take(8).ToArray();
             allNumbers = allNumbers.Except(blue).ToArray();

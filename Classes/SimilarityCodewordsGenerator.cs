@@ -4,19 +4,20 @@ namespace codenames_solver
 {
     public class SimilarityCodewordsGenerator
     {
-        private List<string> currentTeamWords;
-        private List<string> opposingTeamWords;
-        private List<string> neutralWords;
-        private List<string> assassinWords;
+        private readonly List<string> currentTeamWords;
+        private readonly List<string> opposingTeamWords;
+        private readonly List<string> neutralWords;
+        private readonly List<string> assassinWords;
 
-        private List<List<string>> wordPerms;
+        private readonly List<List<string>> wordPerms;
 
-        private Vocabulary _vocabulary;
-        private ValidWords _validWords;
+        private readonly Vocabulary _vocabulary;
+        private readonly ValidWords _validWords;
 
         private const int CURRENT_BONUS = 500;
 
         private const double PENALTY_COEFFICIENT = 0.5;
+
         private const double ASSASSIN_PENALTY = -200*PENALTY_COEFFICIENT;
         private const double OPPOSING_PENALTY = -100*PENALTY_COEFFICIENT;
         private const double NEUTRAL_PENALTY = -50*PENALTY_COEFFICIENT;
@@ -38,7 +39,7 @@ namespace codenames_solver
             double dotProduct = 0.0;
             double norm1 = 0.0;
             double norm2 = 0.0;
-            object locker = new object();
+            object locker = new();
 
             Parallel.For(0, _vocabulary.VectorDimensionsCount, i =>
             {
@@ -61,7 +62,7 @@ namespace codenames_solver
         // Time to leetcode it up
         private List<List<string>> GenerateWordPermsChooseN(List<string> words, int chooseN)
         {
-            List<List<string>> result = new List<List<string>>();
+            List<List<string>> result = new();
             GenerateWordPermsHelper(words, chooseN, new List<string>(), result);
             return result;
         }
@@ -85,11 +86,10 @@ namespace codenames_solver
 
         private Representation GenerateAdditionRepresentation(List<string> wordPerm)
         {
-            //Safety check
             if (wordPerm == null || wordPerm.Count == 0)
                 throw new ArgumentException("wordPerm cannot be null or empty");
 
-            Representation addRepresentation = _vocabulary[wordPerm[0]];  // Initialize
+            Representation addRepresentation = _vocabulary[wordPerm[0]];
 
             for (int i = 1; i < wordPerm.Count; i++)  // Start the loop from the 2nd item
             {
@@ -122,7 +122,7 @@ namespace codenames_solver
 
         private SimilarityItem GenerateSimilarityItem(List<string> wordPerm)
         {
-            SimilarityItem similarityItem = new SimilarityItem(wordPerm);
+            SimilarityItem similarityItem = new(wordPerm);
 
             var additionRepresentation = GenerateAdditionRepresentation(wordPerm);
             var closestAdditions = _vocabulary.Distance(additionRepresentation, DISTANCES_COUNT);

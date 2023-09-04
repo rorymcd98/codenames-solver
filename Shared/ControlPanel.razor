@@ -26,7 +26,7 @@
             }
         </select>
     </div>
-    @if (errorMessage != null)
+    @if (errorMessage != null && errorMessage.Length > 0)
     {
         <p style="color: red;">
             Error: @errorMessage
@@ -39,45 +39,63 @@
 </div>
 
 @code {
-    private string errorMessage;
+    private string errorMessage = string.Empty;
     private string findCodewordsButtonText = "Find Codewords";
-    private SimilarityPostResponseDTO similarityResponse;
+    private SimilarityPostResponseDTO similarityResponse = new();
     private int currentNumberOfWords => ControlState.CurrentNumberOfWords;
     private List<int> validNumbers = Enumerable.Range(1, 6).ToList();
     private Team currentTeam => ControlState.CurrentTeam;
-    private string localCodeWord;
+    private string localCodeWord = string.Empty;
 
     void UpdateCurrentCodeWord(ChangeEventArgs e)
     {
-        string newCodeWord = e.Value.ToString();
+        string newCodeWord = e?.Value?.ToString() ?? string.Empty;
         ControlState.UpdateCodeWord(newCodeWord);
     }
 
     void UpdateNumberOfWords(ChangeEventArgs e)
     {
-        int newNumber = int.Parse(e.Value.ToString());
-        ControlState.UpdateNumberOfWords(newNumber);
+        if (e?.Value?.ToString() is string stringValue
+           && int.TryParse(stringValue, out int newNumber))
+        {
+            ControlState.UpdateNumberOfWords(newNumber);
+        }
+        else
+        {
+            throw new ArgumentException($"Value must be an integer, but got: {e?.Value}");
+        }
     }
 
     void UpdateCurrentTeam(ChangeEventArgs e)
     {
-        Team newTeam;
-        string newTeamString = e.Value.ToString();
-        if(newTeamString == "Red")
+        if (e?.Value?.ToString() is string newTeamString)
         {
-            newTeam = Team.Red;
+            Team newTeam;
+
+            if (newTeamString == "Red")
+            {
+                newTeam = Team.Red;
+            }
+            else if (newTeamString == "Blue")
+            {
+                newTeam = Team.Blue;
+            }
+            else
+            {
+                throw new ArgumentException($"Value must be 'Red' or 'Blue', but got: {newTeamString}");
+            }
+
+            ControlState.UpdateTeam(newTeam);
         }
         else
         {
-            newTeam = Team.Blue;
+            throw new NullReferenceException($"'e' or 'e.Value' is null.");
         }
-
-        ControlState.UpdateTeam(newTeam);
     }
 
-    private async void GetWordAssessment()
+    private void GetWordAssessment()
     {
-        return;
+        throw new NotImplementedException();
     }
 
     private async void GetSimilarWords()
@@ -89,7 +107,7 @@
             errorMessage = $"Invalid words: [{string.Join(", ", invalidWords)}]";
             return;
         }
-        errorMessage = null;
+        errorMessage = string.Empty;
         similarityResponse = await SimilarityClient.RequestSimilarWords();
         DataState.UpdateSimilarityItems(similarityResponse.SimilarCodewords);
         DataState.UpdateIsLoadingSimilarity(false);

@@ -21,7 +21,7 @@
             NotifyStateChanged("LoadingState");
         }
 
-        public event Action<string> StateChanged;
+        public event Action<string>? StateChanged;
         private void NotifyStateChanged(string Property)
             => StateChanged?.Invoke(Property);
     }

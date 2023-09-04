@@ -6,8 +6,7 @@ namespace codenames_solver
     {
         private const int NUMBER_OF_CARDS = 25;
         public List<CardInfo> Cards { get; private set; }
-        private ValidWords validWords;
-        private Random random = new Random();
+        private readonly ValidWords validWords;
         public CardsState(ValidWords ValidWords)
         {
             Cards = new List<CardInfo>(NUMBER_OF_CARDS);
@@ -62,7 +61,7 @@ namespace codenames_solver
 
         public List<string> ListInvalidWords()
         {
-            List<string> result = new List<string>();
+            List<string> result = new();
             foreach (var card in Cards)
             {
                 if (!validWords.IsValidWord(card.Text))
@@ -106,7 +105,7 @@ namespace codenames_solver
             NotifyStateChanged(Source, "CardText");
         }
 
-        public event Action<ComponentBase, string> StateChanged;
+        public event Action<ComponentBase, string>? StateChanged;
 
         private void NotifyStateChanged(ComponentBase Source, string Property)
             => StateChanged?.Invoke(Source, Property);

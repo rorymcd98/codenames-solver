@@ -2,8 +2,8 @@
 {
     public class SimilarityPostDTO
     {
-        public List<CardInfo> Cards { get; set; }
-        public string CurrentCodeWord { get; set; }
+        public List<CardInfo> Cards { get; set; } = new List<CardInfo>();
+        public string CurrentCodeWord { get; set; } = string.Empty;
         public int CurrentNumberOfWords { get; set; }
         public Team CurrentTeam { get; set; }
     }

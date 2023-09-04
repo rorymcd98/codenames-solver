@@ -7,8 +7,8 @@ namespace codenames_solver.Controllers
     [ApiController]
     public class SimilarityController : ControllerBase
     {
-        private Vocabulary _vocabulary;
-        private ValidWords _validWords;
+        private readonly Vocabulary _vocabulary;
+        private readonly ValidWords _validWords;
 
 
         public SimilarityController(Vocabulary vocabulary, ValidWords validWords)
