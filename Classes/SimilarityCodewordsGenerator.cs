@@ -14,13 +14,13 @@ namespace codenames_solver
         private readonly Vocabulary _vocabulary;
         private readonly ValidWords _validWords;
         private readonly List<CardInfo> _cards;
-        private const int CURRENT_BONUS = 500;
 
         private const double PENALTY_COEFFICIENT = 0.5;
 
-        private const double ASSASSIN_PENALTY = -200 * PENALTY_COEFFICIENT;
-        private const double OPPOSING_PENALTY = -100 * PENALTY_COEFFICIENT;
-        private const double NEUTRAL_PENALTY = -50 * PENALTY_COEFFICIENT;
+        protected const int CURRENT_BONUS = 500;
+        protected const double ASSASSIN_PENALTY = -200;
+        protected const double OPPOSING_PENALTY = -100;
+        protected const double NEUTRAL_PENALTY = -50;
 
         private const int DISTANCES_COUNT = 100;
         private const int CODEWORDS_COUNT = 10;
@@ -107,15 +107,15 @@ namespace codenames_solver
             var word = additionDistance.Representation.WordOrNull;
             foreach (var opWord in _opposingTeamWords)
             {
-                score += CosineSimilarity(opWord, word) * OPPOSING_PENALTY;
+                score += CosineSimilarity(opWord, word) * OPPOSING_PENALTY * PENALTY_COEFFICIENT;
             }
             foreach (var asWord in _assassinWords)
             {
-                score += CosineSimilarity(asWord, word) * ASSASSIN_PENALTY;
+                score += CosineSimilarity(asWord, word) * ASSASSIN_PENALTY * PENALTY_COEFFICIENT;
             }
             foreach (var neWord in _neutralWords)
             {
-                score += CosineSimilarity(neWord, word) * NEUTRAL_PENALTY;
+                score += CosineSimilarity(neWord, word) * NEUTRAL_PENALTY * PENALTY_COEFFICIENT;
             }
             return score;
         }
