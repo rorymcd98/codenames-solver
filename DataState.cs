@@ -8,7 +8,7 @@
         public DataState()
         {
             CurrentSimilarityItems = new List<SimilarityItem>();
-            IsLoadingSimilarity = true;
+            IsLoadingSimilarity = false;
         }
         public void UpdateSimilarityItems(List<SimilarityItem> NewSimilarityItems)
         {

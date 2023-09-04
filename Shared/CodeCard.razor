@@ -5,16 +5,11 @@
 <div class="code-card flex-column align-items-center" style="opacity: @opacityValue" card-color="@cardColor" @onclick="ToggleColorSelector" >
     <div class="d-flex gap-2">
         <span>
-            <input class="w-100" placeholder="Enter a word..." @oninput="UpdateCardTextOninput" value="@cardText" @onclick:stopPropagation="true" @onfocus="OnFocus" @onblur="OnBlur" />
+            <FuzzyInput Text="@cardText" UpdateText="@UpdateText" />
         </span>
 
         <IsValidWordIcon CardIndex="@CardIndex"/>
     </div>
-
-    @if (_isInputSelected)
-    {
-        <WordsDropdown CardIndex="@CardIndex"/>
-    }
 
     <hr class="my-1"/>
     <div class="d-flex justify-content-between align-items-stretch w-100">
@@ -36,32 +31,19 @@
     [Parameter]
     public int CardIndex { get; set; }
 
-    private bool _isInputSelected;
     private string cardText => CardsState.GetCardText(CardIndex);
     private CardColor cardColor => CardsState.GetCardColor(CardIndex);
     private string opacityValue => CardsState.GetCardPicked(CardIndex) ? "30%" : "100%";
     private bool ShowColorSelector { get; set; } = false;
-    
-
-    void OnFocus(FocusEventArgs e)
-    {
-        _isInputSelected = true;
-    }
-
-    void OnBlur(FocusEventArgs e)
-    {
-        _isInputSelected = false;
-    }
 
     void ToggleColorSelector()
     {
         ShowColorSelector = !ShowColorSelector;
     }
 
-    void UpdateCardTextOninput(ChangeEventArgs e)
+    void UpdateText(string newText)
     {
-        string msg = e.Value.ToString();
-        CardsState.UpdateCardText(this, msg, CardIndex);
+        CardsState.UpdateCardText(this, newText, CardIndex);
     }
 
     protected override void OnInitialized()

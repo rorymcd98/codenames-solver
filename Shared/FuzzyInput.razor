@@ -1,0 +1,44 @@
+﻿@inject FuzzySort FuzzySort
+@inject ValidWords ValidWords
+
+<div>
+    <input class="w-100" placeholder="Enter a word..." @oninput="UpdateCardTextOninput" value="@Text" @onclick:stopPropagation="true" @onfocus="OnFocus" @onblur="OnBlur" />
+    @if (_isInputSelected)
+    {
+        <div class="words-dropdown">
+            @foreach (var word in ValidFuzzyWordsList)
+            {
+                <div class="words-dropdown-element" @onmousedown="() => UpdateText.InvokeAsync(word)" @onclick:stopPropagation="true">@word</div>
+            }
+        </div>
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public EventCallback<string> UpdateText { get; set; }
+
+    private bool _isInputSelected = false;
+    private List<string> ValidFuzzyWordsList => FuzzySort.GetFuzzyList(Text, ValidWords.Words);
+
+    void UpdateCardTextOninput(ChangeEventArgs e)
+    {
+        string msg = e.Value.ToString();
+        UpdateText.InvokeAsync(msg);
+    }
+
+
+    void OnFocus(FocusEventArgs e)
+    {
+        _isInputSelected = true;
+    }
+
+    void OnBlur(FocusEventArgs e)
+    {
+        _isInputSelected = false;
+    }
+}

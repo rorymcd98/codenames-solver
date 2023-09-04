@@ -9,10 +9,12 @@
 
   <ItemGroup>
     <None Remove="Shared\Button.razor.css" />
+    <None Remove="Shared\SimilarityItemsSidebar.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Shared\Button.razor.css" />
+    <Content Include="Shared\SimilarityItemsSidebar.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
