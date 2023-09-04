@@ -2,22 +2,22 @@
 {
     public class DataState
     {
-        public List<SimilarityItem> CurrentSimilarityItems { get; private set; }
+        public List<SimilarityGeneratorItem> CurrentSimilarityItems { get; private set; }
         public bool IsLoadingSimilarity { get; private set; }
 
         public DataState()
         {
-            CurrentSimilarityItems = new List<SimilarityItem>();
+            CurrentSimilarityItems = new List<SimilarityGeneratorItem>();
             IsLoadingSimilarity = false;
         }
-        public void UpdateSimilarityItems(List<SimilarityItem> NewSimilarityItems)
+        public void UpdateSimilarityItems(List<SimilarityGeneratorItem> NewSimilarityItems)
         {
-            this.CurrentSimilarityItems = NewSimilarityItems;
+            CurrentSimilarityItems = NewSimilarityItems;
             NotifyStateChanged("SimilarityItems");
         }
         public void UpdateIsLoadingSimilarity(bool isLoading)
         {
-            this.IsLoadingSimilarity = isLoading;
+            IsLoadingSimilarity = isLoading;
             NotifyStateChanged("LoadingState");
         }
 

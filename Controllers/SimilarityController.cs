@@ -18,11 +18,11 @@ namespace codenames_solver.Controllers
         }
 
         [HttpPost]
-        public SimilarityPostResponseDTO Post([FromBody] SimilarityPostDTO similarityPostBody)
+        public SimilarityGeneratorPostResponseDTO Post([FromBody] SimilarityGeneratorPostRequestDTO similarityPostBody)
         {
             var similarityCodewordsGenerator = new SimilarityCodewordsGenerator(similarityPostBody, _vocabulary, _validWords);
             var similarityItems = similarityCodewordsGenerator.GenerateSimilarityItems();
-            var similarityPostResponse = new SimilarityPostResponseDTO { SimilarCodewords = similarityItems };
+            var similarityPostResponse = new SimilarityGeneratorPostResponseDTO { SimilarCodewords = similarityItems };
             return similarityPostResponse;
         }
     }

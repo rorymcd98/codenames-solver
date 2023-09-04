@@ -1,7 +1,7 @@
 ﻿using FuzzySharp;
 public class FuzzySort
 {
-    private static Func<string, IEnumerable<string>, int, List<string>> FuzzyListFactory = (input, words, limit) => words
+    private static readonly Func<string, IEnumerable<string>, int, List<string>> s_fuzzyListFactory = (input, words, limit) => words
         .Select(word => new { Word = word, Score = Fuzz.PartialRatio(input, word) })
         .OrderByDescending(x => x.Score)
         .Take(limit)
@@ -10,6 +10,6 @@ public class FuzzySort
 
     public static List<string> GetFuzzyList(string input, IEnumerable<string> words, int limit = 30)
     {
-        return FuzzyListFactory.Invoke(input, words, limit);
+        return s_fuzzyListFactory.Invoke(input, words, limit);
     }
 }

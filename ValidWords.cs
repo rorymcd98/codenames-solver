@@ -39,7 +39,7 @@ namespace codenames_solver
             return Words[index];
         }
 
-        const string PATH = @"C:\Users\rorym\OneDrive\Desktop\Word2vec\nlpl\words.json";
+        const string PATH = @"./words.json";
         public ValidWords()
         {
             jsonWords = GetJsonWords(PATH);

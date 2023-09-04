@@ -13,7 +13,7 @@ namespace codenames_solver
 
         private readonly Vocabulary _vocabulary;
         private readonly ValidWords _validWords;
-
+        private readonly List<CardInfo> _cards;
         private const int CURRENT_BONUS = 500;
 
         private const double PENALTY_COEFFICIENT = 0.5;
@@ -33,8 +33,8 @@ namespace codenames_solver
                 throw new Exception("One or both words not found in vocabulary");
             }
 
-            var vector1 = _vocabulary.GetRepresentationFor(word1).NumericVector;
-            var vector2 = _vocabulary.GetRepresentationFor(word2).NumericVector;
+            float[] vector1 = _vocabulary.GetRepresentationFor(word1).NumericVector;
+            float[] vector2 = _vocabulary.GetRepresentationFor(word2).NumericVector;
 
             double dotProduct = 0.0;
             double norm1 = 0.0;
@@ -120,9 +120,9 @@ namespace codenames_solver
             return score;
         }
 
-        private SimilarityItem GenerateSimilarityItem(List<string> wordPerm)
+        private SimilarityGeneratorItem GenerateSimilarityItem(List<string> wordPerm)
         {
-            SimilarityItem similarityItem = new(wordPerm);
+            SimilarityGeneratorItem similarityItem = new(wordPerm);
 
             var additionRepresentation = GenerateAdditionRepresentation(wordPerm);
             var closestAdditions = _vocabulary.Distance(additionRepresentation, DISTANCES_COUNT);
@@ -152,9 +152,9 @@ namespace codenames_solver
             return similarityItem;
         }
 
-        public List<SimilarityItem> GenerateSimilarityItems()
+        public List<SimilarityGeneratorItem> GenerateSimilarityItems()
         {
-            var similarityItems = new List<SimilarityItem>();
+            var similarityItems = new List<SimilarityGeneratorItem>();
 
             Console.WriteLine(_wordPerms.Count);
 
@@ -173,12 +173,12 @@ namespace codenames_solver
             return similarityItems;
         }
 
-        public SimilarityCodewordsGenerator(SimilarityPostDTO similarityPostBody, Vocabulary vocabulary, ValidWords validWords)
+        public SimilarityCodewordsGenerator(SimilarityGeneratorPostRequestDTO similarityPostBody, Vocabulary vocabulary, ValidWords validWords)
         {
             _vocabulary = vocabulary;
             _validWords = validWords;
 
-            var Cards = similarityPostBody.Cards;
+            _cards = similarityPostBody.Cards;
             _currentTeamWords = new List<string>();
             _opposingTeamWords = new List<string>();
             _neutralWords = new List<string>();
@@ -188,7 +188,7 @@ namespace codenames_solver
             CardColor CurrentTeamCardColor = similarityPostBody.CurrentTeam == Team.Red ? CardColor.Red : CardColor.Blue;
 
 
-            foreach (var card in Cards)
+            foreach (var card in _cards)
             {
                 if (card.Picked) continue;
                 var originalWord = _validWords.GetOriginalWord(card.Text);

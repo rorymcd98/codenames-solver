@@ -41,7 +41,7 @@
 @code {
     string errorMessage = string.Empty;
     string findCodewordsButtonText = "Find Codewords";
-    SimilarityPostResponseDTO similarityResponse = new();
+    SimilarityGeneratorPostResponseDTO similarityResponse = new();
     int currentNumberOfWords => ControlState.CurrentNumberOfWords;
     List<int> validNumbers = Enumerable.Range(1, 6).ToList();
     Team currentTeam => ControlState.CurrentTeam;

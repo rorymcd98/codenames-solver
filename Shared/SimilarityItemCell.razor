@@ -34,7 +34,7 @@
 
 @code {
     [Parameter]
-    public SimilarityItem? SimilarityItem { get; set; }
+    public SimilarityGeneratorItem? SimilarityItem { get; set; }
 
     string heading => $"Relating to:";
     List<Tuple<string, double>> CodeWordScores => SimilarityItem?.CodeWordScores ?? new List<Tuple<string, double>>();
