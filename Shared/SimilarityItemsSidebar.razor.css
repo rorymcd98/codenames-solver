@@ -1,0 +1,10 @@
+﻿#similarity-items-sidebar {
+    display: flex;
+    right: 0;
+    flex-direction: column;
+    background-color: lightgray;
+    width: 18rem;
+    height: 100%;
+    padding: 3px;
+    overflow-y: scroll;
+}

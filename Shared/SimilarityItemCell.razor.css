@@ -1,0 +1,8 @@
+﻿.similarity-item-cell {
+    width: 100%;
+    height: auto;
+    font-size: 1rem;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: solid gray 1px;
+}

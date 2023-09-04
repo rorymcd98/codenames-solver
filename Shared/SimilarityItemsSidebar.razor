@@ -1,0 +1,28 @@
+﻿@namespace codenames_solver
+@inject DataState DataState
+@implements IDisposable
+
+<div class="position-relative" id="similarity-items-sidebar">
+    <Loading IsLoading="@isLoading" />
+    @foreach (var SimilarityItem in similarityItems)
+    {
+        <SimilarityItemCell SimilarityItem="@SimilarityItem" />
+    }
+</div>
+
+@code {
+    private List<SimilarityItem> similarityItems => DataState.CurrentSimilarityItems;
+    private bool isLoading => DataState.IsLoadingSimilarity;
+
+    protected override void OnInitialized()
+    {
+        DataState.StateChanged += async (Property)
+            => await InvokeAsync(StateHasChanged);
+    }
+
+    void IDisposable.Dispose()
+    {
+        DataState.StateChanged -= async (Property)
+            => await InvokeAsync(StateHasChanged);
+    }
+}

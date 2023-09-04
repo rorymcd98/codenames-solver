@@ -2,21 +2,6 @@
 
 namespace codenames_solver
 {
-    class SortByScoreDescending : IComparer<Tuple<string, double>>
-    {
-        public int Compare(Tuple<string, double> x, Tuple<string, double> y)
-        {
-            return y.Item2.CompareTo(x.Item2);
-        }
-    }
-    class SortByTopScoreDescending : IComparer<SimilarityItem>
-    {
-        public int Compare(SimilarityItem x, SimilarityItem y)
-        {
-            return y.TopScore.CompareTo(x.TopScore);
-        }
-    }
-
     public class SimilarityCodewordsGenerator
     {
         private List<string> currentTeamWords;
@@ -30,11 +15,13 @@ namespace codenames_solver
         private ValidWords _validWords;
 
         private const int CURRENT_BONUS = 500;
-        private const int ASSASSIN_PENALTY = -200;
-        private const int OPPOSING_PENALTY = -100;
-        private const int NEUTRAL_PENALTY = -50;
 
-        private const int DISTANCES_LIMIT = 100;
+        private const double PENALTY_COEFFICIENT = 0.5;
+        private const double ASSASSIN_PENALTY = -200*PENALTY_COEFFICIENT;
+        private const double OPPOSING_PENALTY = -100*PENALTY_COEFFICIENT;
+        private const double NEUTRAL_PENALTY = -50*PENALTY_COEFFICIENT;
+
+        private const int DISTANCES_COUNT = 100;
         private const int CODEWORDS_COUNT = 10;
         private const int PERMUTATIONS_COUNT = 10;
 
@@ -98,17 +85,20 @@ namespace codenames_solver
 
         private Representation GenerateAdditionRepresentation(List<string> wordPerm)
         {
-            var additionRepresentation = _vocabulary[wordPerm[0]];
-            if (wordPerm.Count == 1)
+            //Safety check
+            if (wordPerm == null || wordPerm.Count == 0)
+                throw new ArgumentException("wordPerm cannot be null or empty");
+
+            Representation addRepresentation = _vocabulary[wordPerm[0]];  // Initialize
+
+            for (int i = 1; i < wordPerm.Count; i++)  // Start the loop from the 2nd item
             {
-                return additionRepresentation;
+                addRepresentation = addRepresentation.Add(_vocabulary[wordPerm[i]]);
             }
-            for (int i = 1; i < wordPerm.Count; i++)
-            {
-                additionRepresentation.Add(_vocabulary[wordPerm[i]]);
-            }
-            return additionRepresentation;
+
+            return addRepresentation;
         }
+
 
         private double ScoreDistances(DistanceTo additionDistance)
         {
@@ -135,49 +125,53 @@ namespace codenames_solver
             SimilarityItem similarityItem = new SimilarityItem(wordPerm);
 
             var additionRepresentation = GenerateAdditionRepresentation(wordPerm);
-            var closestAdditions = _vocabulary.Distance(additionRepresentation, DISTANCES_LIMIT);
+            var closestAdditions = _vocabulary.Distance(additionRepresentation, DISTANCES_COUNT);
 
-            var CodeWordScores = new SortedSet<Tuple<string, double>>(new SortByScoreDescending());
+            var codeWordScores = new List<Tuple<string, double>>();
 
             foreach (DistanceTo additionDistance in closestAdditions)
             {
-                var CodeWord = additionDistance.Representation.WordOrNull.ToString();
-                var score = ScoreDistances(additionDistance);
-                var CodeWordScore = Tuple.Create<string, double>(CodeWord, score);
-                similarityItem.TopScore = Math.Max(score, similarityItem.TopScore);
-
-                // Add item to the SortedSet
-                CodeWordScores.Add(CodeWordScore);
-                if (CodeWordScores.Count > CODEWORDS_COUNT)
+                var codeWord = additionDistance.Representation.WordOrNull.ToString();
+                if (wordPerm.Contains(codeWord))
                 {
-                    // Remove the lowest element if count exceeds CODEWORDS_COUNT
-                    CodeWordScores.Remove(CodeWordScores.Min);
+                    continue;
                 }
+                var score = ScoreDistances(additionDistance);
+                var codeWordScore = new Tuple<string, double>(codeWord, score);
+
+                codeWordScores.Add(codeWordScore);
             }
-            similarityItem.CodeWordScores = CodeWordScores.ToList();
+
+            codeWordScores.Sort((x, y) => y.Item2.CompareTo(x.Item2));
+            if (codeWordScores.Count > CODEWORDS_COUNT)
+            {
+                codeWordScores = codeWordScores.Take(CODEWORDS_COUNT).ToList();
+            }
+            similarityItem.CodeWordScores = codeWordScores;
+
             return similarityItem;
         }
 
         public List<SimilarityItem> GenerateSimilarityItems()
         {
-            var topSimilarityItems = new SortedSet<SimilarityItem>(new SortByTopScoreDescending());
+            var similarityItems = new List<SimilarityItem>();
 
-            foreach (List<string> perm in wordPerms)
+            Console.WriteLine(wordPerms.Count);
+
+            foreach (List<string> wordPerm in wordPerms)
             {
-                // Generating the similarity item for this permutation
-                var similarityItem = GenerateSimilarityItem(perm);
-
-                // Add item to the SortedSet
-                topSimilarityItems.Add(similarityItem);
-                if (topSimilarityItems.Count > PERMUTATIONS_COUNT)
-                {
-                    // Remove the lowest element if count exceeds PERMUTATIONS_COUNT
-                    topSimilarityItems.Remove(topSimilarityItems.Min);
-                }
+                var similarityItem = GenerateSimilarityItem(wordPerm);
+                similarityItems.Add(similarityItem);
             }
-            return topSimilarityItems.ToList();
-        }
 
+            similarityItems.Sort((x, y) => y.CodeWordScores[0].Item2.CompareTo(x.CodeWordScores[0].Item2));
+
+            if (similarityItems.Count > PERMUTATIONS_COUNT)
+            {
+                similarityItems = similarityItems.Take(PERMUTATIONS_COUNT).ToList();
+            }
+            return similarityItems;
+        }
 
         public SimilarityCodewordsGenerator(SimilarityPostDTO similarityPostBody, Vocabulary vocabulary, ValidWords validWords)
         {

@@ -7,10 +7,10 @@
         Black,
         Neutral
     }
+
+    public record ColorIndeces(int[] Blue, int Black, int[] Red);
     public class CardColors
     {
-        public record ColorIndeces(int[] Blue, int Black, int[] Red);
-
         public static ColorIndeces GenerateIndeces()
         {
             int[] allNumbers = Enumerable.Range(0, 25).ToArray();

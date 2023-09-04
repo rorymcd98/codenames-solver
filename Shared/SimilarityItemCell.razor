@@ -1,0 +1,50 @@
+﻿<div class="similarity-item-cell px-3">
+    <h6>@heading</h6>
+    <ul>
+        @foreach (string relatedWord in SimilarityItem.RelatedWords)
+        {
+            <li>
+                @relatedWord
+            </li>
+        }
+    </ul>
+    <h6>Codewords:</h6>
+    <div>@topCodeWordText</div>
+    <div>
+        <button class="btn btn-link p-0" @onclick="Toggle">
+            @(isExpanded ? "See less" : "See more")
+        </button>
+        @if (isExpanded)
+        {
+            <div style="margin-left: 10px; overflow: hidden;">
+                @for (int i = 1; i < CodeWordScores.Count; i++)
+                {
+                    <div style="white-space: nowrap; text-overflow: ellipsis;">
+                        @CodeWordScores[i].Item1: @Math.Round(CodeWordScores[i].Item2, 1)
+                    </div>
+                    if (i != CodeWordScores.Count)
+                    {
+                        <hr class="my-1" />
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public SimilarityItem SimilarityItem { get; set; }
+
+    private string heading => $"Relating to:";
+    private List<Tuple<string, double>> CodeWordScores => SimilarityItem.CodeWordScores;
+    private int lastIdx => CodeWordScores.Count - 1;
+    private Tuple<string, double> topCodeWord => SimilarityItem.CodeWordScores[0];
+    private string topCodeWordText => $"{topCodeWord.Item1}: {Math.Round(topCodeWord.Item2, 1)}";
+
+    private bool isExpanded = false;
+    private void Toggle()
+    {
+        isExpanded = !isExpanded;
+    }
+}

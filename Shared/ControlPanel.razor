@@ -1,6 +1,7 @@
 ﻿@inject SimilarityClient SimilarityClient
 @inject CardsState CardsState
 @inject ControlState ControlState
+@inject DataState DataState
 
 <div class="d-flex flex-column gap-2 align-items-center">
     <div class="d-flex gap-2 align-items-center">
@@ -81,6 +82,7 @@
 
     private async void GetSimilarWords()
     {
+        DataState.UpdateIsLoadingSimilarity(true);
         var invalidWords = CardsState.ListInvalidWords();
         if (invalidWords.Count > 0)
         {
@@ -89,6 +91,8 @@
         }
         errorMessage = null;
         similarityResponse = await SimilarityClient.RequestSimilarWords();
+        DataState.UpdateSimilarityItems(similarityResponse.SimilarCodewords);
+        DataState.UpdateIsLoadingSimilarity(false);
     }
 
     private string randomiseBoardButtonText = "Generate Random Board";

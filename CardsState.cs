@@ -44,10 +44,19 @@ namespace codenames_solver
                 index++;
             }
         }
+
+        private void ResetPicked()
+        {
+            foreach (var card in Cards)
+            {
+                card.Picked = false;
+            }
+        }
         public void GenerateRandomBoard(ComponentBase Source)
         {
             GenerateRandomCardColors();
             GenerateRandomCardWords();
+            ResetPicked();
             NotifyStateChanged(Source, "Board");
         }
 

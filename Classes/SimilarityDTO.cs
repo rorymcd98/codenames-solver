@@ -1,45 +1,26 @@
-﻿using codenames_solver;
-
-namespace codenames_solver
+﻿namespace codenames_solver
 {
     public class SimilarityPostDTO
     {
-        public readonly List<CardInfo> Cards;
-        public readonly string CurrentCodeWord;
-        public readonly int CurrentNumberOfWords;
-        public readonly Team CurrentTeam;
-        public SimilarityPostDTO(List<CardInfo> Cards, string currentCodeWord,
-                                 int currentNumberOfWords, Team currentTeam)
-        {
-            this.Cards = Cards;
-            this.CurrentCodeWord = currentCodeWord;
-            this.CurrentNumberOfWords = currentNumberOfWords;
-            this.CurrentTeam = currentTeam;
-        }
+        public List<CardInfo> Cards { get; set; }
+        public string CurrentCodeWord { get; set; }
+        public int CurrentNumberOfWords { get; set; }
+        public Team CurrentTeam { get; set; }
     }
 
     public class SimilarityItem
     {
-        public List<Tuple<string, double>> CodeWordScores;
-        public readonly List<string> RelatedWords;
-        public double TopScore;
-        
+        public List<Tuple<string, double>> CodeWordScores { get; set; } = new List<Tuple<string, double>>();
+        public List<string> RelatedWords { get; set; }
         public SimilarityItem(List<string> relatedWords)
         {
-            this.CodeWordScores = new List<Tuple<string, double>>();
             this.RelatedWords = relatedWords;
-            this.TopScore = 0;
         }
     }
 
     public class SimilarityPostResponseDTO
     {
-        public readonly List<SimilarityItem> SimilarCodewords;
-
-        public SimilarityPostResponseDTO(List<SimilarityItem> similarityItems)
-        {
-            SimilarCodewords = similarityItems;
-        }
+        public List<SimilarityItem> SimilarCodewords { get; set; } = new List<SimilarityItem>();
     }
 
     public class DTOBuilder
@@ -55,8 +36,13 @@ namespace codenames_solver
 
         public SimilarityPostDTO BuildSimilarityPostDTO()
         {
-            return new SimilarityPostDTO(_cardsState.Cards, _controlState.CurrentCodeWord,
-                                         _controlState.CurrentNumberOfWords, _controlState.CurrentTeam);
+            return new SimilarityPostDTO
+            {
+                Cards = _cardsState.Cards,
+                CurrentCodeWord = _controlState.CurrentCodeWord,
+                CurrentNumberOfWords = _controlState.CurrentNumberOfWords,
+                CurrentTeam = _controlState.CurrentTeam
+            };
         }
     }
 }

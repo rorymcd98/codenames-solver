@@ -8,10 +8,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<CardsState>();
 builder.Services.AddScoped<ControlState>();
+builder.Services.AddScoped<DataState>();
 builder.Services.AddHttpClient<SimilarityClient>("LocalApi", client => client.BaseAddress = new Uri("http://localhost:5073/"));
 builder.Services.AddSingleton<Vocabulary>(sp =>
 {
-    var path = @"C:\Users\rorym\OneDrive\Desktop\Word2vec\nlpl\model.bin";
+    var path = @"C:\Users\rorym\OneDrive\Desktop\Word2vec\nlpl\model_short.bin";
     var vocabulary = new Word2VecBinaryReader().Read(path);
     return vocabulary;
 });

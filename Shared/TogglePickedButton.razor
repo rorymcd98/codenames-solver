@@ -2,11 +2,11 @@
 <div @onmousedown="ToggleCardPicked" @onmousedown:stopPropagation class="d-flex align-items-center justify-content-center" style="user-select: none; border: solid gray 1px; border-radius: 50%; width: 25px; height: 25px;">
     @if (cardPicked)
     {
-        <div>✔</div>
+        <div aria-label="Unmark card as revealed">⭕</div>
     }
     else
     {
-        <div>⭕</div>
+        <div aria-label="Mark card as revealed">✔</div>
     }
 </div>
     
