@@ -4,9 +4,9 @@ namespace codenames_solver
 {
     public class CardsState
     {
-        private const int NUMBER_OF_CARDS = 25;
+        const int NUMBER_OF_CARDS = 25;
         public List<CardInfo> Cards { get; private set; }
-        private readonly ValidWords validWords;
+        readonly ValidWords _validWords;
         public CardsState(ValidWords ValidWords)
         {
             Cards = new List<CardInfo>(NUMBER_OF_CARDS);
@@ -14,14 +14,14 @@ namespace codenames_solver
             {
                 Cards.Add(new CardInfo());
             }
-            validWords = ValidWords;
+            _validWords = ValidWords;
         }
 
         private void GenerateRandomCardWords()
         {
             foreach (var card in Cards)
             {
-                card.Text = validWords.GetRandomWord();
+                card.Text = _validWords.GetRandomWord();
             }
         }
 
@@ -64,7 +64,7 @@ namespace codenames_solver
             List<string> result = new();
             foreach (var card in Cards)
             {
-                if (!validWords.IsValidWord(card.Text))
+                if (!_validWords.IsValidWord(card.Text))
                 {
                     result.Add(card.Text);
                 }

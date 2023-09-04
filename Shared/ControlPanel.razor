@@ -39,13 +39,13 @@
 </div>
 
 @code {
-    private string errorMessage = string.Empty;
-    private string findCodewordsButtonText = "Find Codewords";
-    private SimilarityPostResponseDTO similarityResponse = new();
-    private int currentNumberOfWords => ControlState.CurrentNumberOfWords;
-    private List<int> validNumbers = Enumerable.Range(1, 6).ToList();
-    private Team currentTeam => ControlState.CurrentTeam;
-    private string localCodeWord = string.Empty;
+    string errorMessage = string.Empty;
+    string findCodewordsButtonText = "Find Codewords";
+    SimilarityPostResponseDTO similarityResponse = new();
+    int currentNumberOfWords => ControlState.CurrentNumberOfWords;
+    List<int> validNumbers = Enumerable.Range(1, 6).ToList();
+    Team currentTeam => ControlState.CurrentTeam;
+    string localCodeWord = string.Empty;
 
     void UpdateCurrentCodeWord(ChangeEventArgs e)
     {
@@ -93,12 +93,12 @@
         }
     }
 
-    private void GetWordAssessment()
+    void GetWordAssessment()
     {
         throw new NotImplementedException();
     }
 
-    private async void GetSimilarWords()
+    async void GetSimilarWords()
     {
         DataState.UpdateIsLoadingSimilarity(true);
         var invalidWords = CardsState.ListInvalidWords();
@@ -113,8 +113,8 @@
         DataState.UpdateIsLoadingSimilarity(false);
     }
 
-    private string randomiseBoardButtonText = "Generate Random Board";
-    private void RandomiseBoard()
+    string randomiseBoardButtonText = "Generate Random Board";
+    void RandomiseBoard()
     {
         CardsState.GenerateRandomBoard(this);
     }

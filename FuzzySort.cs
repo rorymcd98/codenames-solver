@@ -1,5 +1,5 @@
 ﻿using FuzzySharp;
-public class FuzzySort 
+public class FuzzySort
 {
     private static Func<string, IEnumerable<string>, int, List<string>> FuzzyListFactory = (input, words, limit) => words
         .Select(word => new { Word = word, Score = Fuzz.PartialRatio(input, word) })

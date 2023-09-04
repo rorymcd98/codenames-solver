@@ -36,15 +36,15 @@
     [Parameter]
     public SimilarityItem? SimilarityItem { get; set; }
 
-    private string heading => $"Relating to:";
-    private List<Tuple<string, double>> CodeWordScores => SimilarityItem?.CodeWordScores ?? new List<Tuple<string, double>>();
-    private int lastIdx => CodeWordScores.Count - 1;
+    string heading => $"Relating to:";
+    List<Tuple<string, double>> CodeWordScores => SimilarityItem?.CodeWordScores ?? new List<Tuple<string, double>>();
+    int lastIdx => CodeWordScores.Count - 1;
 
-    private Tuple<string, double> topCodeWord => SimilarityItem?.CodeWordScores?.FirstOrDefault() ?? Tuple.Create<string, double>(string.Empty, 0);
-    private string topCodeWordText => $"{topCodeWord?.Item1 ?? "N/A"}: {Math.Round(topCodeWord?.Item2 ?? 0, 1)}";
+    Tuple<string, double> topCodeWord => SimilarityItem?.CodeWordScores?.FirstOrDefault() ?? Tuple.Create<string, double>(string.Empty, 0);
+    string topCodeWordText => $"{topCodeWord?.Item1 ?? "N/A"}: {Math.Round(topCodeWord?.Item2 ?? 0, 1)}";
 
-    private bool isExpanded = false;
-    private void Toggle()
+    bool isExpanded = false;
+    void Toggle()
     {
         isExpanded = !isExpanded;
     }

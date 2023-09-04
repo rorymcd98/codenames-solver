@@ -3,10 +3,10 @@
 
 <div>
     <input class="w-100" placeholder="Enter a word..." @oninput="UpdateCardTextOninput" value="@Text" @onclick:stopPropagation="true" @onfocus="OnFocus" @onblur="OnBlur" />
-    @if (_isInputSelected)
+    @if (isInputSelected)
     {
         <div class="words-dropdown">
-            @foreach (var word in ValidFuzzyWordsList)
+            @foreach (var word in validFuzzyWordsList)
             {
                 <div class="words-dropdown-element" @onmousedown="() => UpdateText.InvokeAsync(word)" @onclick:stopPropagation="true">@word</div>
             }
@@ -22,8 +22,8 @@
     [Parameter]
     public EventCallback<string> UpdateText { get; set; }
 
-    private bool _isInputSelected = false;
-    private List<string> ValidFuzzyWordsList => FuzzySort.GetFuzzyList(Text, ValidWords.Words);
+    bool isInputSelected = false;
+    List<string> validFuzzyWordsList => FuzzySort.GetFuzzyList(Text, ValidWords.Words);
 
     void UpdateCardTextOninput(ChangeEventArgs e)
     {
@@ -33,11 +33,11 @@
 
     void OnFocus(FocusEventArgs e)
     {
-        _isInputSelected = true;
+        isInputSelected = true;
     }
 
     void OnBlur(FocusEventArgs e)
     {
-        _isInputSelected = false;
+        isInputSelected = false;
     }
 }

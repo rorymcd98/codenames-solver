@@ -1,4 +1,4 @@
-using codenames_solver;
+﻿using codenames_solver;
 using Word2vec.Tools;
 
 var builder = WebApplication.CreateBuilder(args);

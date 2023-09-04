@@ -15,7 +15,7 @@
     [Parameter]
     public int CardIndex { get; set; }
 
-    private bool cardPicked => CardsState.GetCardPicked(CardIndex);
+    bool cardPicked => CardsState.GetCardPicked(CardIndex);
 
     void ToggleCardPicked()
     {

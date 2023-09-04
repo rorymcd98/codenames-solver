@@ -11,8 +11,8 @@
 </div>
 
 @code {
-    private List<SimilarityItem> similarityItems => DataState.CurrentSimilarityItems;
-    private bool isLoading => DataState.IsLoadingSimilarity;
+    List<SimilarityItem> similarityItems => DataState.CurrentSimilarityItems;
+    bool isLoading => DataState.IsLoadingSimilarity;
 
     protected override void OnInitialized()
     {

@@ -14,8 +14,8 @@
     [Parameter]
     public int CardIndex { get; set; }
 
-    private string _cardText => CardsState.GetCardText(CardIndex);
-    private bool _isValidWord => ValidWords.IsValidWord(_cardText);
+    string _cardText => CardsState.GetCardText(CardIndex);
+    bool _isValidWord => ValidWords.IsValidWord(_cardText);
 
     protected override void OnInitialized()
     {

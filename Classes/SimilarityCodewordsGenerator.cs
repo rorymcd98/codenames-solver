@@ -4,12 +4,12 @@ namespace codenames_solver
 {
     public class SimilarityCodewordsGenerator
     {
-        private readonly List<string> currentTeamWords;
-        private readonly List<string> opposingTeamWords;
-        private readonly List<string> neutralWords;
-        private readonly List<string> assassinWords;
+        private readonly List<string> _currentTeamWords;
+        private readonly List<string> _opposingTeamWords;
+        private readonly List<string> _neutralWords;
+        private readonly List<string> _assassinWords;
 
-        private readonly List<List<string>> wordPerms;
+        private readonly List<List<string>> _wordPerms;
 
         private readonly Vocabulary _vocabulary;
         private readonly ValidWords _validWords;
@@ -18,9 +18,9 @@ namespace codenames_solver
 
         private const double PENALTY_COEFFICIENT = 0.5;
 
-        private const double ASSASSIN_PENALTY = -200*PENALTY_COEFFICIENT;
-        private const double OPPOSING_PENALTY = -100*PENALTY_COEFFICIENT;
-        private const double NEUTRAL_PENALTY = -50*PENALTY_COEFFICIENT;
+        private const double ASSASSIN_PENALTY = -200 * PENALTY_COEFFICIENT;
+        private const double OPPOSING_PENALTY = -100 * PENALTY_COEFFICIENT;
+        private const double NEUTRAL_PENALTY = -50 * PENALTY_COEFFICIENT;
 
         private const int DISTANCES_COUNT = 100;
         private const int CODEWORDS_COUNT = 10;
@@ -103,19 +103,19 @@ namespace codenames_solver
         private double ScoreDistances(DistanceTo additionDistance)
         {
             double score = 0;
-            score += additionDistance.DistanceValue*CURRENT_BONUS;
+            score += additionDistance.DistanceValue * CURRENT_BONUS;
             var word = additionDistance.Representation.WordOrNull;
-            foreach (var opWord in opposingTeamWords)
+            foreach (var opWord in _opposingTeamWords)
             {
-                score += CosineSimilarity(opWord, word)*OPPOSING_PENALTY;
+                score += CosineSimilarity(opWord, word) * OPPOSING_PENALTY;
             }
-            foreach (var asWord in assassinWords)
+            foreach (var asWord in _assassinWords)
             {
-                score += CosineSimilarity(asWord, word)*ASSASSIN_PENALTY;
+                score += CosineSimilarity(asWord, word) * ASSASSIN_PENALTY;
             }
-            foreach (var neWord in neutralWords)
+            foreach (var neWord in _neutralWords)
             {
-                score += CosineSimilarity(neWord, word)*NEUTRAL_PENALTY;
+                score += CosineSimilarity(neWord, word) * NEUTRAL_PENALTY;
             }
             return score;
         }
@@ -156,9 +156,9 @@ namespace codenames_solver
         {
             var similarityItems = new List<SimilarityItem>();
 
-            Console.WriteLine(wordPerms.Count);
+            Console.WriteLine(_wordPerms.Count);
 
-            foreach (List<string> wordPerm in wordPerms)
+            foreach (List<string> wordPerm in _wordPerms)
             {
                 var similarityItem = GenerateSimilarityItem(wordPerm);
                 similarityItems.Add(similarityItem);
@@ -179,10 +179,10 @@ namespace codenames_solver
             _validWords = validWords;
 
             var Cards = similarityPostBody.Cards;
-            currentTeamWords = new List<string>();
-            opposingTeamWords = new List<string>();
-            neutralWords = new List<string>();
-            assassinWords = new List<string>();
+            _currentTeamWords = new List<string>();
+            _opposingTeamWords = new List<string>();
+            _neutralWords = new List<string>();
+            _assassinWords = new List<string>();
 
 
             CardColor CurrentTeamCardColor = similarityPostBody.CurrentTeam == Team.Red ? CardColor.Red : CardColor.Blue;
@@ -194,23 +194,23 @@ namespace codenames_solver
                 var originalWord = _validWords.GetOriginalWord(card.Text);
                 if (card.Color == CardColor.Black)
                 {
-                    assassinWords.Add(originalWord);
+                    _assassinWords.Add(originalWord);
                 }
                 else if (card.Color == CardColor.Neutral)
                 {
-                    neutralWords.Add(originalWord);
+                    _neutralWords.Add(originalWord);
                 }
                 else if (card.Color == CurrentTeamCardColor)
                 {
-                    currentTeamWords.Add(originalWord);
+                    _currentTeamWords.Add(originalWord);
                 }
                 else
                 {
-                    opposingTeamWords.Add(originalWord);
+                    _opposingTeamWords.Add(originalWord);
                 }
             }
 
-            wordPerms = GenerateWordPermsChooseN(currentTeamWords, similarityPostBody.CurrentNumberOfWords);
+            _wordPerms = GenerateWordPermsChooseN(_currentTeamWords, similarityPostBody.CurrentNumberOfWords);
         }
     }
 }
