@@ -1,21 +1,32 @@
 ﻿.code-card {
     display: flex;
-    border: solid black 2px;
     border-radius: 10px;
+    box-shadow: rgba(255, 255, 255, 0.05) 3px 3px 1px 2px;
     position: relative;
     background-color: beige;
-    padding: 1rem;
+    padding: 0.4rem;
     cursor: pointer;
+    bottom: 0px;
+    right: 0px;
+    position: relative;
+    transition: ease-out box-shadow 0.2s, ease-out opacity 0.2s, ease-out bottom 0.2s, ease-out right 0.2s;
 }
+
+.code-card:hover {
+    box-shadow: rgba(255, 255, 255, 0.1) 3px 3px 3px 5px;
+    bottom: 1.5px;
+    right: 1.5px;
+}
+
 
 .code-card[card-color='Neutral'] {
     background-color: beige;
 }
 .code-card[card-color='Red'] {
-    background-color: red;
+    background-color: #c21a1a;
 }
 .code-card[card-color='Blue'] {
-    background-color: blue;
+    background-color: #7b9bdc;
 }
 .code-card[card-color='Black'] {
     background-color: dimgray;

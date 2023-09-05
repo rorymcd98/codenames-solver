@@ -2,8 +2,9 @@
 @inject DataState DataState
 @implements IDisposable
 
-<div class="position-relative" id="similarity-items-sidebar">
+<div class="position-relative" id="similarity-items-sidebar" style="color: rgba(233, 233, 233, 0.8)">
     <Loading IsLoading="@isLoading" />
+    <h5>Similarities</h5>
     @foreach (var SimilarityItem in similarityItems)
     {
         <SimilarityItemCell SimilarityItem="@SimilarityItem" />

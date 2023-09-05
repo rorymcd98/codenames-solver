@@ -3,7 +3,7 @@
 @inject ControlState ControlState
 @inject DataState DataState
 
-<div class="d-flex flex-column gap-2 align-items-center">
+<div class="d-flex flex-column gap-2 align-items-center" style="color: rgba(255,255,255,0.7);">
     <div class="d-flex gap-2 align-items-center">
         <Button OnClick="@GetSimilarWords" Text="@findCodewordsButtonText" />
         <Button OnClick="@RandomiseBoard" Text="@randomiseBoardButtonText" />
@@ -22,20 +22,21 @@
         <select @onchange="UpdateCurrentTeam" style="color: white; background-color: @currentTeam" value="@currentTeam">
             @foreach (var team in Enum.GetNames(typeof(Team)))
             {
-                <option value="@team" style="background-color: @team">@team</option>
+                <option value="@team" style="background-color: @team ">@team</option>
             }
         </select>
     </div>
+    @*<div>
+    <input placeholder="(Optional) Test a Codeword..." @oninput="UpdateCurrentCodeWord" value="@localCodeWord" />
+        <Button OnClick="GetWordAssessment" Text="Assess Codeword" />
+    </div> *@
     @if (errorMessage != null && errorMessage.Length > 0)
     {
         <p style="color: red;">
             Error: @errorMessage
         </p>
     }
-    <div>
-        <input placeholder="(Optional) Test a Codeword..." @oninput="UpdateCurrentCodeWord" value="@localCodeWord" />
-    <Button OnClick="GetWordAssessment" Text="Assess Codeword"/>
-    </div>
+
 </div>
 
 @code {
@@ -82,7 +83,9 @@
             }
             else
             {
-                throw new ArgumentException($"Value must be 'Red' or 'Blue', but got: {newTeamString}");
+                var newError = $"Value must be 'Red' or 'Blue', but got: {newTeamString}";
+                errorMessage = newError;
+                throw new ArgumentException(newError);
             }
 
             ControlState.UpdateTeam(newTeam);

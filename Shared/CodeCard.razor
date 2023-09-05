@@ -3,7 +3,7 @@
 @implements IDisposable
 
 <div class="code-card flex-column align-items-center" style="opacity: @opacityValue" card-color="@cardColor" @onclick="ToggleColorSelector" >
-    <div class="d-flex gap-2">
+    <div class="d-flex gap-2 align-items-center">
         <span>
             <FuzzyInput Text="@cardText" UpdateText="@UpdateText" />
         </span>
@@ -12,12 +12,12 @@
     </div>
 
     <hr class="my-1"/>
-    <div class="d-flex justify-content-between align-items-stretch w-100">
+    <div class="d-flex justify-content-between align-items-center w-100">
         <span>
             <TogglePickedButton CardIndex="@CardIndex" />
         </span>
         <span>
-            @* To be implemented *@
+            (tbd)
         </span>
     </div>
     @if(ShowColorSelector)

@@ -1,20 +1,25 @@
 ﻿@page "/"
 
 
-<PageTitle>Index</PageTitle>
-<div class="d-flex flex-column align-items-center justify-content-center">
-    <h3>Codenames Solver</h3>
-    <section class="d-flex" style="height: 625px;">
-        <section class="d-flex flex-column">
-            <CardGrid />
-            <ControlPanel />
+<div class="position-absolute" style="top: 15%; left: 50%; transform: translateX(-50%)">
+    <PageTitle>Index</PageTitle>
+    <div class="d-flex flex-column align-items-center justify-content-center" >
+        <h2 style="color: white; opacity: 50%;">Codenames Solver</h2>
+        <br />
+        <section class="d-flex" style="height: 625px; width: 80vw;">
+            <section class="d-flex flex-column">
+                <CardGrid />
+                <br />
+                <ControlPanel />
+            </section>
+            <SimilarityItemsSidebar />
         </section>
-        <SimilarityItemsSidebar />
-    </section>
 
 
 
+    </div>
 </div>
+
     
 @code {
     //Empty

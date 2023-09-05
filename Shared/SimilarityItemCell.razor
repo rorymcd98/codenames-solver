@@ -1,33 +1,27 @@
 ﻿<div class="similarity-item-cell px-3">
-    <h6>@heading</h6>
-    <ul>
+    <h6 class="heading">@heading</h6>
+    <ul class="related-words">
         @foreach (string relatedWord in SimilarityItem?.RelatedWords ?? new())
         {
-            <li>
-                @relatedWord
-            </li>
+            <li>@relatedWord</li>
         }
     </ul>
-    <h6>Codewords:</h6>
-    <div>@topCodeWordText</div>
-    <div>
-        <button class="btn btn-link p-0" @onclick="Toggle">
+    <h6 class="codewords-heading">Codewords:</h6>
+    <div class="toggle-button">
+        <button class="btn btn-link p-0" @onclick="Toggle" style="color: black;">
             @(isExpanded ? "See less" : "See more")
         </button>
-        @if (isExpanded)
+    </div>
+    <div class="codeword-scores">
+        @foreach (var codeWord in CodeWordScores.Take(nToTake))
         {
-            <div style="margin-left: 10px; overflow: hidden;">
-                @for (int i = 1; i < CodeWordScores.Count; i++)
-                {
-                    <div style="white-space: nowrap; text-overflow: ellipsis;">
-                        @CodeWordScores[i].Item1: @Math.Round(CodeWordScores[i].Item2, 1)
-                    </div>
-                    if (i != CodeWordScores.Count)
-                    {
-                        <hr class="my-1" />
-                    }
-                }
+            <div class="codeword-score">
+                <strong>@codeWord.Item1:</strong> @Math.Round(codeWord.Item2, 1)
             </div>
+            if (codeWord != CodeWordScores.Take(nToTake).Last())
+            {
+                <hr class="divider" />
+            }
         }
     </div>
 </div>
@@ -37,13 +31,9 @@
     public SimilarityGeneratorItem? SimilarityItem { get; set; }
 
     string heading => $"Relating to:";
-    List<Tuple<string, double>> CodeWordScores => SimilarityItem?.CodeWordScores ?? new List<Tuple<string, double>>();
-    int lastIdx => CodeWordScores.Count - 1;
-
-    Tuple<string, double> topCodeWord => SimilarityItem?.CodeWordScores?.FirstOrDefault() ?? Tuple.Create<string, double>(string.Empty, 0);
-    string topCodeWordText => $"{topCodeWord?.Item1 ?? "N/A"}: {Math.Round(topCodeWord?.Item2 ?? 0, 1)}";
-
     bool isExpanded = false;
+    List<Tuple<string, double>> CodeWordScores => SimilarityItem?.CodeWordScores ?? new List<Tuple<string, double>>();
+    int nToTake => isExpanded ? 100 : 1;
     void Toggle()
     {
         isExpanded = !isExpanded;

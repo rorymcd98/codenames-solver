@@ -1,19 +1,21 @@
 ﻿.color-selector {
     position: absolute;
     top: calc(100% + 12px);
-    z-index: 100;
-    border: solid black 1px;
+    z-index: 10011;
+    color: rgb(190, 190, 224, 1);
+    border: solid gray 0.5px;
     border-radius: 4px;
-    padding-inline: 4px;
-    background-color: antiquewhite;
+    padding-inline: 6px;
+    padding-bottom: 3px;
+    background-color: #4e4376;
     cursor: default;
 }
 .color-selector::before {
     content: "";
     position: absolute;
-    top: -10px; /* The arrow will point down from the top of the element */
-    left: 50%; /* This will center the arrow */
-    transform: translateX(-50%); /* This will also help to center the arrow */
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 10px solid black;
@@ -21,16 +23,19 @@
 .col-square {
     height: 2rem;
     width: 2rem;
-    border: solid white 1px;
+    border-radius: 3px;
     margin-inline: 2px;
     cursor: pointer;
 }
+.col-square:hover {
+    filter: brightness(110%);
+}
 .col-square.red{
-    background-color: red;
+    background-color: #c21a1a;
 }
-.col-square.blue {
-    background-color: blue;
-}
+    .col-square.blue {
+        background-color: #7b9bdc;
+    }
 .col-square.neutral {
     background-color: beige;
 }
