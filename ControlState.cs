@@ -19,17 +19,17 @@
         }
         public void UpdateCodeWord(string NewCodeWord)
         {
-            this.CurrentCodeWord = NewCodeWord;
+            CurrentCodeWord = NewCodeWord;
             NotifyStateChanged("CodeWord");
         }
         public void UpdateTeam(Team NewTeam)
         {
-            this.CurrentTeam = NewTeam;
+            CurrentTeam = NewTeam;
             NotifyStateChanged("Team");
         }
         public void UpdateNumberOfWords(int NewNumberOfWords)
         {
-            this.CurrentNumberOfWords = NewNumberOfWords;
+            CurrentNumberOfWords = NewNumberOfWords;
             NotifyStateChanged("NumberOfWords");
         }
 
