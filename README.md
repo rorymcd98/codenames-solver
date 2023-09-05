@@ -3,6 +3,10 @@ A Blazor Server app for finding good 'Codewords' for the game Codenames
 
 C# is relatively new to me, and Blazor is totally new - this was an interesting project I took on to learn more about NLP, dotnet and C#.
 
+Currently comes with a tiny vector embedding model - I suggest using a larger one from vectors.nlpl.eu.
+
+![Solver exampe](https://i.imgur.com/R1jWI5i.png)
+
 The rules of the game are for a codemaster to provide a number N and a 'Codeword' that relates to N words
 on the board, the rest of the team must try to guess these related words, while avoiding unrelated neutral,
 opposing, and assassin words.
